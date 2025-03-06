@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thoughtscape | A Personal Blog</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="description" content="A personal blog sharing thoughts, stories and ideas">
+  <meta name="theme-color" content="#2d3748">
+</head>
+<body>
+  <div class="theme-toggle" aria-label="Toggle dark mode">
+    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+  </div>
+
+  <div class="container">
+    <header class="site-header reveal-element">
+      <div class="header-content">
+        <h1 class="site-title">Thoughtscape</h1>
+        <div class="site-tagline">
+          <p>A website for stories that inspire and ideas that matter.</p>
+          <div class="tagline-decoration">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <main>
+      <section class="create-post-section reveal-element">
+        <div class="section-header">
+          <h2 class="section-title">Create New Post</h2>
+          <p class="section-subtitle">Share your thoughts with the world</p>
+        </div>
+        
+        <form id="postForm" class="post-form">
+          <div class="form-group">
+            <label for="title" class="form-label">Post Title</label>
+            <input type="text" id="title" placeholder="Enter your title..." required>
+            <div class="input-underline"></div>
+          </div>
+          
+          <div class="form-group">
+            <label for="content" class="form-label">Post Content</label>
+            <textarea id="content" placeholder="Share your thoughts..." required></textarea>
+            <div class="input-underline"></div>
+          </div>
+          
+          <button type="submit" class="btn-submit">
+            <span class="btn-text">Publish Post</span>
+            <div class="btn-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </div>
+          </button>
+        </form>
+      </section>
+      
+      <section class="posts-section reveal-element">
+        <div class="section-header">
+          <h2 class="section-title">Latest Posts</h2>
+          <p class="section-subtitle">Browse through thoughts and stories</p>
+        </div>
+        
+        <div id="posts" class="posts-grid"></div>
+      </section>
+    </main>
+    
+    <footer class="site-footer reveal-element">
+      <div class="footer-content">
+        <p class="copyright">&copy; <span id="current-year"></span> Thoughtscape</p>
+        <p class="tagline">Thoughtfully crafted with love</p>
+      </div>
+    </footer>
+  </div>
+  
+  <script>
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    
+    const themeToggle = document.querySelector('.theme-toggle');
+    const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const currentTheme = localStorage.getItem('theme') || 
+                        (prefersDarkScheme.matches ? 'dark' : 'light');
+    
+    if (currentTheme === 'dark') {
+      document.body.classList.add('dark-theme');
+    }
+    
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-theme');
+      
+      const theme = document.body.classList.contains('dark-theme') ? 'dark' : 'light';
+      localStorage.setItem('theme', theme);
+    });
+    
+    const revealElements = document.querySelectorAll('.reveal-element');
+    
+    const revealOnScroll = () => {
+      for (let i = 0; i < revealElements.length; i++) {
+        const elementTop = revealElements[i].getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < window.innerHeight - elementVisible) {
+          revealElements[i].classList.add('active');
+        }
+      }
+    };
+    
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll();
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>
